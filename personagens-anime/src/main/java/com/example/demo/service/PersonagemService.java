@@ -23,5 +23,9 @@ public class PersonagemService {
 		return personagemRepo.findPersonagemById(id)
 				.orElseThrow(() -> new UserNotFoundException("Personagem id " + id + " não foi encontrado."));
 	}
+
+	public void salvarPersonagem(Personagem personagem) {
+		personagemRepo.save(personagem);
+	}
 	
 }
