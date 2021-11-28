@@ -2,7 +2,6 @@ package com.example.demo.controller;
 
 import java.net.URI;
 import java.util.List;
-import java.util.Optional;
 
 import javax.transaction.Transactional;
 
@@ -20,14 +19,20 @@ import org.springframework.web.util.UriComponentsBuilder;
 
 import com.example.demo.controller.form.PersonagemForm;
 import com.example.demo.modelo.Personagem;
+import com.example.demo.modelo.Serie;
+import com.example.demo.repo.PersonagemRepo;
 import com.example.demo.service.PersonagemService;
+import com.example.demo.service.SerieService;
 
 @Controller
 @RequestMapping("/personagem")
 public class PersonagemController {
-	
+
 	@Autowired
 	private PersonagemService personagemService;
+	
+	@Autowired
+	private SerieService serieService;
 
 	@GetMapping("/todos")
     public ResponseEntity<List<Personagem>> listarTodosPersonagens(){
@@ -38,17 +43,18 @@ public class PersonagemController {
 	@GetMapping("/encontrar/{id}")
     public ResponseEntity<Personagem> encontrarPersonagemPeloId( @PathVariable("id") Long id){
         Personagem personagem = personagemService.encontrarPersonagem(id);
-        return new ResponseEntity<>(personagem, HttpStatus.OK); 
+        return new ResponseEntity<>(personagem, HttpStatus.OK);
     }
 	
 	@PostMapping
 	@Transactional
 	public ResponseEntity<Personagem> cadastrar(@RequestBody PersonagemForm form, UriComponentsBuilder uriBuilder) {
-		Personagem personagem = form.converterParaPersonagem();
-		personagemService.salvarPersonagem(personagem);
 		
-		URI uri = uriBuilder.path("/personagem/{id}").buildAndExpand(personagem.getId()).toUri();
-		return ResponseEntity.created(uri).body(personagem);
+		Serie serie = serieService.encontrarSerie(form.getIdSerie());
+		Personagem personagem = form.converterParaPersonagem(serie);
+		personagemService.salvarPersonagem(personagem);
+
+		return new ResponseEntity<>(personagem, HttpStatus.OK);
 	}
 	
 	@DeleteMapping("/{id}")
@@ -62,6 +68,5 @@ public class PersonagemController {
 			return ResponseEntity.notFound().build();
 		}
 	}
-	
 	
 }

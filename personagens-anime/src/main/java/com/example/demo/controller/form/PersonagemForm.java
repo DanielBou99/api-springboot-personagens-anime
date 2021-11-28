@@ -1,11 +1,12 @@
 package com.example.demo.controller.form;
 
 import com.example.demo.modelo.Personagem;
+import com.example.demo.modelo.Serie;
 
 public class PersonagemForm {
 	
 	private String nome;
-	private String serie;
+	private Long idSerie;
 
 	public String getNome() {
 		return nome;
@@ -13,18 +14,17 @@ public class PersonagemForm {
 	public void setNome(String nome) {
 		this.nome = nome;
 	}
-	public String getSerie() {
-		return serie;
+	public Long getIdSerie() {
+		return idSerie;
 	}
-	public void setSerie(String serie) {
-		this.serie = serie;
+	public void setIdSerie(Long idSerie) {
+		this.idSerie = idSerie;
 	}
 	
-	public Personagem converterParaPersonagem() {
+	public Personagem converterParaPersonagem(Serie serie) {
 		Personagem personagem = new Personagem();
 		personagem.setNome(this.nome);
-		personagem.setSerie(this.serie);
-		
+		personagem.setSerie(serie);
 		return personagem;
 	}
 }

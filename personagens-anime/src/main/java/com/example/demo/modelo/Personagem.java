@@ -5,16 +5,25 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.ManyToOne;
+import javax.persistence.Table;
+
+import com.fasterxml.jackson.annotation.JsonBackReference;
 
 @Entity
+@Table(name="PERSONAGEM")
 public class Personagem {
 
 	@Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(nullable = false, updatable = false)
 	private Long id;
+	
 	private String nome;
-	private String serie;
+	
+	@JsonBackReference
+	@ManyToOne
+	private Serie serie;
 
 	public Long getId() {
 		return id;
@@ -28,10 +37,12 @@ public class Personagem {
 	public void setNome(String nome) {
 		this.nome = nome;
 	}
-	public String getSerie() {
+	public Serie getSerie() {
 		return serie;
 	}
-	public void setSerie(String serie) {
+	public void setSerie(Serie serie) {
 		this.serie = serie;
 	}
+	
+	
 }
