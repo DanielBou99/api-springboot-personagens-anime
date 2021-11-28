@@ -28,4 +28,7 @@ public class PersonagemService {
 		personagemRepo.save(personagem);
 	}
 	
+	public void deletarPersonagem(Long id) {
+		personagemRepo.deleteById(id);
+	}
 }
